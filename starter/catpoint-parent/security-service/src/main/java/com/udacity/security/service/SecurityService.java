@@ -1,6 +1,6 @@
 package com.udacity.security.service;
 
-import com.udacity.image.service.FakeImageService;
+import com.udacity.image.service.ImageService;
 import com.udacity.security.application.StatusListener;
 import com.udacity.security.data.AlarmStatus;
 import com.udacity.security.data.ArmingStatus;
@@ -20,14 +20,15 @@ import java.util.Set;
  */
 public class SecurityService {
 
-    private FakeImageService imageService;
+    private final ImageService imageService;
     private SecurityRepository securityRepository;
     private Set<StatusListener> statusListeners = new HashSet<>();
 
-    public SecurityService(SecurityRepository securityRepository, FakeImageService imageService) {
+    public SecurityService(SecurityRepository securityRepository, ImageService imageService) {
         this.securityRepository = securityRepository;
         this.imageService = imageService;
     }
+
 
     /**
      * Sets the current arming status for the system. Changing the arming status
@@ -35,8 +36,15 @@ public class SecurityService {
      * @param armingStatus
      */
     public void setArmingStatus(ArmingStatus armingStatus) {
-        if(armingStatus == ArmingStatus.DISARMED) {
+        if (armingStatus == ArmingStatus.DISARMED) {
             setAlarmStatus(AlarmStatus.NO_ALARM);
+        } else {
+            // Reset all sensors to inactive when the system is armed
+            Set<Sensor> sensors = securityRepository.getSensors();
+            sensors.forEach(sensor -> {
+                sensor.setActive(false);
+                securityRepository.updateSensor(sensor);
+            });
         }
         securityRepository.setArmingStatus(armingStatus);
     }
@@ -106,15 +114,23 @@ public class SecurityService {
      * @param active
      */
     public void changeSensorActivationStatus(Sensor sensor, Boolean active) {
-        if(!sensor.getActive() && active) {
+        if (!sensor.getActive() && active) {
             handleSensorActivated();
         } else if (sensor.getActive() && !active) {
             handleSensorDeactivated();
+        } else if (sensor.getActive() && active && securityRepository.getAlarmStatus() == AlarmStatus.PENDING_ALARM) {
+            // If sensor is already active and activated again while in PENDING_ALARM, set alarm to ALARM
+            securityRepository.setAlarmStatus(AlarmStatus.ALARM);
         }
         sensor.setActive(active);
         securityRepository.updateSensor(sensor);
-    }
 
+        // Check if all sensors are inactive and the alarm status is PENDING_ALARM
+        if (securityRepository.getAlarmStatus() == AlarmStatus.PENDING_ALARM &&
+                securityRepository.getSensors().stream().noneMatch(Sensor::getActive)) {
+            securityRepository.setAlarmStatus(AlarmStatus.NO_ALARM);
+        }
+    }
     /**
      * Send an image to the SecurityService for processing. The securityService will use its provided
      * ImageService to analyze the image for cats and update the alarm status accordingly.

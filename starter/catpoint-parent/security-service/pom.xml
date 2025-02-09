@@ -44,6 +44,22 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- Mockito -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>5.10.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Add Mockito JUnit 5 Extension -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>5.10.0</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- Guava & Gson (Already in Parent) -->
     <dependency>
       <groupId>com.google.guava</groupId>
