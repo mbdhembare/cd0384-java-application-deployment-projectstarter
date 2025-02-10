@@ -118,4 +118,27 @@
     </pluginManagement>
   </build>
 
+  <reporting>
+    <plugins>
+      <!-- Upgrade maven-project-info-reports-plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>3.4.0</version>
+      </plugin>
+      <!-- SpotBugs Maven Plugin -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.8.3.0</version> <!-- Use the latest version -->
+        <configuration>
+          <effort>Max</effort> <!-- Analysis effort level -->
+          <threshold>High</threshold> <!-- Report only high-priority issues -->
+          <xmlOutput>true</xmlOutput> <!-- Generate XML report -->
+          <htmlOutput>true</htmlOutput> <!-- Generate HTML report -->
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+
 </project>

@@ -9,4 +9,5 @@ module com.udacity.security {
     requires com.google.common;
     requires com.google.gson;
     requires miglayout.swing;
+    opens com.udacity.security.data to com.google.gson;
 }
