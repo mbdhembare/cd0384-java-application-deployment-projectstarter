@@ -24,6 +24,7 @@ public enum AlarmStatus {
     }
 
     public Color getColor() {
+
         return color;
     }
 }

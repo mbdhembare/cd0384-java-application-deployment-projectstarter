@@ -15,10 +15,6 @@ public class Sensor implements Comparable<Sensor> {
     private Boolean active;
     private SensorType sensorType;
 
-    public Sensor() {
-
-    }
-
     public Sensor(String name, SensorType sensorType) {
         this.name = name;
         this.sensorType = sensorType;
@@ -26,6 +22,7 @@ public class Sensor implements Comparable<Sensor> {
         this.active = Boolean.FALSE;
     }
 
+    public Sensor(){}
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,38 +33,47 @@ public class Sensor implements Comparable<Sensor> {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(sensorId);
     }
 
     public String getName() {
+
         return name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
     public Boolean getActive() {
+
         return active;
     }
 
     public void setActive(Boolean active) {
+
         this.active = active;
     }
 
     public SensorType getSensorType() {
+
         return sensorType;
     }
 
     public void setSensorType(SensorType sensorType) {
+
         this.sensorType = sensorType;
     }
 
     public UUID getSensorId() {
+
         return sensorId;
     }
 
     public void setSensorId(UUID sensorId) {
+
         this.sensorId = sensorId;
     }
 

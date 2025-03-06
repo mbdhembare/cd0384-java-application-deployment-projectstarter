@@ -29,15 +29,15 @@ import java.util.stream.Collectors;
  * 4. Next to Permissions. Select 'Attach existing policies directly' and attack 'AmazonRekognitionFullAccess'
  * 5. Next through the remaining screens. Copy the 'Access key ID' and 'Secret access key' for this user.
  * 6. Create a config.properties file in the src/main/resources dir containing the keys referenced in this class
- *      aws.id=[your access key id]
- *      aws.secret=[your Secret access key]
- *      aws.region=[an aws region of choice. For example: us-east-2]
+ * aws.id=[your access key id]
+ * aws.secret=[your Secret access key]
+ * aws.region=[an aws region of choice. For example: us-east-2]
  */
-public class AwsImageService implements ImageService{
+public class AwsImageService implements ImageService  {
 
-    private Logger log = LoggerFactory.getLogger(AwsImageService.class);
+    private static  Logger log = LoggerFactory.getLogger(AwsImageService.class);
 
-    //aws recommendation is to maintain only a single instance of client objects
+    // Make rekognitionClient instance-specific (non-static)
     private static RekognitionClient rekognitionClient;
 
     public AwsImageService() {
@@ -63,8 +63,8 @@ public class AwsImageService implements ImageService{
     /**
      * Returns true if the provided image contains a cat.
      * @param image Image to scan
-     * @param confidenceThreshhold Minimum threshhold to consider for cat. For example, 90.0f would require 90% confidence minimum
-     * @return
+     * @param confidenceThreshhold Minimum threshold to consider for cat. For example, 90.0f would require 90% confidence minimum
+     * @return true if the image contains a cat
      */
     public boolean imageContainsCat(BufferedImage image, float confidenceThreshhold) {
         Image awsImage = null;

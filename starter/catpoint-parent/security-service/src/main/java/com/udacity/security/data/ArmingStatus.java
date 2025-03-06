@@ -20,10 +20,12 @@ public enum ArmingStatus {
     }
 
     public String getDescription() {
+
         return description;
     }
 
     public Color getColor() {
+
         return color;
     }
 }
